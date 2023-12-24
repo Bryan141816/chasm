@@ -37,5 +37,7 @@ class Weapon(pygame.sprite.Sprite):
         self.frame_index += self.animation_speed
         if not self.frame_index >= len(animation):
             self.image = animation[int(self.frame_index)]
+        if self.frame_index > len(animation):
+            self.kill()
     def update(self):
         self.animate()

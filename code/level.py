@@ -23,16 +23,7 @@ class Level:
 
         self.ore_destroy_sound = pygame.mixer.Sound('../audio\ore_destroy.wav')
         self.ore_destroy_sound.set_volume(0.8)
-    def create_map(self):
-        '''for row_index ,row in enumerate(WORLD_MAP):
-            for col_index, col in enumerate(row):
-                x = col_index * TILESIZE
-                y = row_index * TILESIZE
-                if col == 'x':
-                    Tile((x,y),[self.visible_spirtes, self.obstacle_sprites])
-                elif col == 'p':
-                    self.player = Player((x,y),[self.visible_spirtes], self.obstacle_sprites)'''
-        
+    def create_map(self):        
         layouts = {
             'boundary': import_csv_layout('../map/world level._collision.csv'),
             'ore': import_csv_layout('../map\world level._Ore.csv'),

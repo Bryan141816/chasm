@@ -120,6 +120,7 @@ class Enemy(Entity):
                         self.damage_player(self.attack_damage)
                     elif attack == 'heavy':
                         self.damage_player(self.attack_damage*2)
+                        
 
                 self.can_special_attack = False
 
