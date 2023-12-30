@@ -57,7 +57,7 @@ class Game:
                 self.main_sound.set_volume(self.bgm_volume)
 
             if self.win:
-                self.background_image = pygame.image.load('launcher\endscreen-01.png').convert()
+                self.background_image = pygame.image.load('../assets\splash_screens\endscreen-01.png').convert()
                 self.background_image = pygame.transform.scale(self.background_image, (WIDTH, HEIGHT))
                 self.screen.blit(self.background_image, (0, 0))
 

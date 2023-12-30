@@ -12,7 +12,7 @@ class Launcher(QWidget):
 
     def initUI(self):
         # Load the PNG image
-        image_path = "launcher/splash.jpg"
+        image_path = "../assets\splash_screens\splash.jpg"
         image = QImage(image_path)
 
         # Create a QPixmap from the QImage
