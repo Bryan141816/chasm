@@ -60,9 +60,11 @@ class Launcher(QWidget):
 
     def launchGame(self):
         # Launch the Pygame window from the main module
-        self.close
-        game = Game()
+        game = Game(self.reopenwindow)
+        self.showMinimized()
         game.run()
+    def reopenwindow(self):
+        self.showNormal()
         
 
 if __name__ == '__main__':

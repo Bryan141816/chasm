@@ -6,13 +6,17 @@ from node import Node
 import random
 from traversal import Traversal
 class Enemy(Entity):
-    def __init__(self, mosnster_name, pos, groups, obstacle_sprites, damage_player, summon_ally = None):
+    def __init__(self, mosnster_name, pos, groups, obstacle_sprites, damage_player, bgm_control, summon_ally = None):
         super().__init__(groups)
         self.boss = False
         self.sprite_type = 'enemy'
         self.import_graphics(mosnster_name)
         self.status = 'idle'
         self.image = self.animations[self.status][self.frame_index]
+
+        self.noticed_player = False
+
+        self.bgm_control = bgm_control
 
         self.create_behaivor(mosnster_name)
         self.summon_ally = summon_ally
@@ -87,6 +91,9 @@ class Enemy(Entity):
             if self.status != 'attack':
                 self.frame_index = 0
             self.status = self.root.right.left.val
+            if self.boss and not self.noticed_player:
+                self.bgm_control('start')
+                self.noticed_player = True
         elif distance <= self.notice_radius:
             self.status = self.root.right.val
         else:
@@ -178,6 +185,7 @@ class Enemy(Entity):
             if not player.health >= player.stats['health']:
                 if self.boss:
                     player.health = player.stats['health']
+                    self.bgm_control('win')
                 else:
                     player.health += 50
                     if player.health > player.stats['health']:

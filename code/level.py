@@ -8,10 +8,12 @@ from weapon import Weapon
 from ui import UI
 from enemy import Enemy
 class Level:
-    def __init__(self):
+    def __init__(self, bgm_control):
         self.display_surface = pygame.display.get_surface()
         self.visible_spirtes = YSortCameraGroup()
         self.obstacle_sprites = pygame.sprite.Group()
+
+        self.bgm_control = bgm_control
 
         self.current_attack = None
         self.attack_sprites = pygame.sprite.Group()
@@ -48,11 +50,11 @@ class Level:
                             if col == '296':
                                 self.player = Player((x,y),[self.visible_spirtes],self.obstacle_sprites, self.create_attack, self.destroy_attack)
                             elif col == '280':
-                                Enemy('slime', (x,y), [self.visible_spirtes, self.attackable_srpites], self.obstacle_sprites, self.damage_player)
+                                Enemy('slime', (x,y), [self.visible_spirtes, self.attackable_srpites], self.obstacle_sprites, self.damage_player, self.bgm_control)
                             elif col == '281':
-                                Enemy('boss_slime', (x,y), [self.visible_spirtes, self.attackable_srpites], self.obstacle_sprites, self.damage_player, self.summon_ally)
+                                Enemy('boss_slime', (x,y), [self.visible_spirtes, self.attackable_srpites], self.obstacle_sprites, self.damage_player, self.bgm_control, self.summon_ally)
     def summon_ally(self, pos, name):
-        Enemy(name, pos, [self.visible_spirtes, self.attackable_srpites], self.obstacle_sprites, self.damage_player)
+        Enemy(name, pos, [self.visible_spirtes, self.attackable_srpites], self.obstacle_sprites, self.damage_player, self.bgm_control)
     def create_attack(self):
         self.current_attack = Weapon(self.player,[self.visible_spirtes, self.attack_sprites])
     def destroy_attack(self):
