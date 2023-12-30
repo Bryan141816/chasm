@@ -3,6 +3,8 @@ import sys
 from config import *
 from level import Level
 
+
+
 class Game:
     def __init__(self):
         pygame.init()
@@ -12,12 +14,12 @@ class Game:
         pygame.display.set_caption("Game")
 
         self.level = Level()
-
-        main_sound = pygame.mixer.Sound('../audio/bryan-cave.wav')
-        main_sound.play(loops=-1)
-        
+        self.bgm_playing = False
+        self.bg_count = 0
         # Load the background image
-        self.background_image = pygame.image.load("../assets/control/CONTROL_SPLASH.png").convert()
+        self.bg_path = ["../assets\Intro\intro1.jpg","../assets\Intro\intro2.jpg","../assets\Intro\intro3.jpg","../assets\Intro\intro4.jpg","../assets/control/CONTROL_SPLASH.png"]
+        self.background_image = pygame.image.load(self.bg_path[self.bg_count]).convert()
+
 
         # Scale the background image to fit the screen
         self.background_image = pygame.transform.scale(self.background_image, (WIDTH, HEIGHT))
@@ -31,8 +33,23 @@ class Game:
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    # Left mouse click
-                    self.show_background = False
+
+                    if self.bg_count == 4:
+                        self.show_background = False
+                        if not self.bgm_playing:
+
+                            main_sound = pygame.mixer.Sound('../audio/bryan-cave.wav')
+                            main_sound.play(loops=-1)
+                            self.bgm_playing = True
+                    else:
+                    
+                        # Left mouse click
+                        self.bg_count += 1
+                        self.background_image = pygame.image.load(self.bg_path[self.bg_count]).convert()
+                        # Scale the background image to fit the screen
+                        self.background_image = pygame.transform.scale(self.background_image, (WIDTH, HEIGHT))
+            
+
 
             if self.show_background:
                 # Draw the scaled background image
@@ -45,6 +62,3 @@ class Game:
             pygame.display.update()
             self.clock.tick(FPS)
 
-if __name__ == '__main__':
-    game = Game()
-    game.run()
