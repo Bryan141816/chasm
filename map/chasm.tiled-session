@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "world level.tmx",
+    "activeFile": "boss_domain.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
@@ -13,10 +13,52 @@
             "scaleInDock": 0.5,
             "scaleInEditor": 0.5
         },
+        "boss_domain.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1198,
+                "y": 796
+            }
+        },
+        "c c.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 3,
+            "scaleInEditor": 4
+        },
+        "cavestyle.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 3,
+            "scaleInEditor": 4
+        },
+        "main_cave.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 0.5,
+            "scaleInEditor": 1
+        },
+        "new_map.tmx": {
+            "expandedGroupLayers": [
+                7
+            ],
+            "scale": 0.33,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 545.4545454545455,
+                "y": 515.1515151515152
+            }
+        },
         "ore.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 1,
             "scaleInEditor": 0.5
+        },
+        "tutorial_room.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 1372,
+                "y": 472
+            }
         },
         "world level.tmx": {
             "expandedGroupLayers": [
@@ -25,13 +67,13 @@
             "scale": 0.75,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 819.9999999999999,
-                "y": 783.9999999999999
+                "x": 895.3333333333333,
+                "y": 1791.3333333333333
             }
         }
     },
     "last.exportedFilePath": "C:/Users/bryan/Documents/Code/Python/TheChasm/chasm/map",
-    "last.imagePath": "C:/Users/bryan/Downloads/craftpix-net-106469-top-down-crystals-pixel-art/PNG",
+    "last.imagePath": "C:/Users/bryan/Downloads",
     "map.lastUsedExportFilter": "CSV files (*.csv)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 64,
@@ -39,13 +81,25 @@
     "openFiles": [
         "Cave.tsx",
         "world level.tmx",
-        "ore.tsx"
+        "ore.tsx",
+        "cavestyle.tsx",
+        "c c.tsx",
+        "main_cave.tsx",
+        "tutorial_room.tmx",
+        "new_map.tmx",
+        "boss_domain.tmx"
     ],
     "project": "chasm.tiled-project",
     "recentFiles": [
         "Cave.tsx",
+        "world level.tmx",
         "ore.tsx",
-        "world level.tmx"
+        "cavestyle.tsx",
+        "c c.tsx",
+        "main_cave.tsx",
+        "tutorial_room.tmx",
+        "new_map.tmx",
+        "boss_domain.tmx"
     ],
     "resizeMap.removeObjects": false,
     "tileset.lastUsedFormat": "tsx",

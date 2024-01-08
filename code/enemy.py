@@ -6,7 +6,7 @@ from node import Node
 import random
 from traversal import Traversal
 class Enemy(Entity):
-    def __init__(self, mosnster_name, pos, groups, obstacle_sprites, damage_player, bgm_control, summon_ally = None):
+    def __init__(self, mosnster_name, pos, groups, obstacle_sprites, damage_player, bgm_control, summon_ally = None, show_win = None):
         super().__init__(groups)
         self.boss = False
         self.sprite_type = 'enemy'
@@ -20,9 +20,13 @@ class Enemy(Entity):
 
         self.create_behaivor(mosnster_name)
         self.summon_ally = summon_ally
+        self.show_win = show_win
         if mosnster_name == 'boss_slime':
             self.boss = True
             self.create_attack_pattern()
+
+        self.blindess_time = None
+        self.blindess_cooldown = 3000
 
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(0, -26)
@@ -72,7 +76,7 @@ class Enemy(Entity):
     def create_attack_pattern(self):
         self.attack_root = Node('normal')
         self.attack_root.left = Node('summon')
-        self.attack_root.right = Node('heavy')
+        self.attack_root.right = Node('blindness')
         
 
 
@@ -125,8 +129,9 @@ class Enemy(Entity):
                             self.summon_ally((x,y), 'slime')
                     elif attack == 'normal':
                         self.damage_player(self.attack_damage)
-                    elif attack == 'heavy':
-                        self.damage_player(self.attack_damage*2)
+                    elif attack == 'blindness' and not self.blindess_time:
+                        self.blindess_time = pygame.time.get_ticks()
+                        player.status_effect = True
                         
 
                 self.can_special_attack = False
@@ -148,7 +153,7 @@ class Enemy(Entity):
             if self.status == 'attack':
                 self.can_attack = False
             self.frame_index = 0
-        self.image = animation[int(self.frame_index)]
+        self.image = animation[int(self.frame_index)].convert_alpha()
         self.rect = self.image.get_rect(center = self.hitbox.center)
 
         if not self.vulnerable:
@@ -158,7 +163,7 @@ class Enemy(Entity):
         else:
             self.image.set_alpha(255)
     
-    def attack_cooldown(self):
+    def attack_cooldown(self, player):
         current_time = pygame.time.get_ticks()
         if not self.can_attack:
             if current_time - self.attack_time >= self.attack_colldown:
@@ -170,6 +175,14 @@ class Enemy(Entity):
         if not self.can_special_attack:
             if current_time - self.special_attack_time >= self.special_attack_cooldown:
                 self.can_special_attack = True
+        if self.blindess_time:
+
+            if current_time - self.blindess_time >= self.blindess_cooldown:
+                player.status_effect = False
+                self.blindess_time = None
+        if player.gadget_effect:
+            self.blindess_time = None
+                
 
 
     def get_damage(self, player):
@@ -181,16 +194,20 @@ class Enemy(Entity):
             self.vulnerable = False
     
     def check_death(self, player):
+        if self.boss:
+            print(self.health)
         if self.health <= 0:
             if not player.health >= player.stats['health']:
                 if self.boss:
                     player.health = player.stats['health']
                     self.bgm_control('win')
+                    self.show_win()
+                    self.kill()
                 else:
                     player.health += 50
                     if player.health > player.stats['health']:
                         player.health = player.stats['health']
-            self.kill()
+                    self.kill()
     
     def hit_reaction(self):
         if not self.vulnerable:
@@ -199,9 +216,9 @@ class Enemy(Entity):
         self.hit_reaction()
         self.move(self.speed)
         self.animate()
-        self.attack_cooldown()
     
     def enemy_update(self, player):
         self.check_death(player)
         self.get_status(player)
         self.actions(player)
+        self.attack_cooldown(player)
