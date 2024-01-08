@@ -6,7 +6,7 @@ from node import Node
 import random
 from traversal import Traversal
 class Enemy(Entity):
-    def __init__(self, mosnster_name, pos, groups, obstacle_sprites, damage_player, bgm_control, summon_ally = None, show_win = None):
+    def __init__(self, mosnster_name, pos, groups, obstacle_sprites, damage_player, summon_ally = None, show_win = None):
         super().__init__(groups)
         self.boss = False
         self.sprite_type = 'enemy'
@@ -16,7 +16,7 @@ class Enemy(Entity):
 
         self.noticed_player = False
 
-        self.bgm_control = bgm_control
+        
 
         self.create_behaivor(mosnster_name)
         self.summon_ally = summon_ally
@@ -56,8 +56,8 @@ class Enemy(Entity):
         self.hit_time = None
         self.invisibility_duction = 300
 
-        self.hit_sound = pygame.mixer.Sound('../audio\hit.wav')
-        self.hit_sound.set_volume(0.4)
+        self.hit_sound = pygame.mixer.Sound('../audio\hurt.mp3')
+        self.hit_sound.set_volume(0.6)
 
 
     def import_graphics(self, name):
@@ -96,7 +96,6 @@ class Enemy(Entity):
                 self.frame_index = 0
             self.status = self.root.right.left.val
             if self.boss and not self.noticed_player:
-                self.bgm_control('start')
                 self.noticed_player = True
         elif distance <= self.notice_radius:
             self.status = self.root.right.val
@@ -194,13 +193,10 @@ class Enemy(Entity):
             self.vulnerable = False
     
     def check_death(self, player):
-        if self.boss:
-            print(self.health)
         if self.health <= 0:
             if not player.health >= player.stats['health']:
                 if self.boss:
                     player.health = player.stats['health']
-                    self.bgm_control('win')
                     self.show_win()
                     self.kill()
                 else:

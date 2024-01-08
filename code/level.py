@@ -63,8 +63,8 @@ class Level:
 
         self.ui = UI()
 
-        self.ore_destroy_sound = pygame.mixer.Sound('../audio\ore_destroy.wav')
-        self.ore_destroy_sound.set_volume(0.8)
+        self.ore_destroy_sound = pygame.mixer.Sound('../audio/break.wav')
+        self.ore_destroy_sound.set_volume(0.6)
     def draw_text(self, text,text_col,font_size,x = None, y = None):
         font = pygame.font.Font('../assets/font\joystix.ttf', font_size)
         if self.display_text:
@@ -111,11 +111,11 @@ class Level:
                             if col == '93':
                                 self.player = Player((x,y),[self.visible_spirtes, self.player_sprite],self.obstacle_sprites, self.create_attack, self.destroy_attack, self.use_gadget, self.show_retry_screen)
                             elif col == '321':
-                                    Enemy('slime', (x,y), [self.visible_spirtes, self.attackable_srpites], self.obstacle_sprites, self.damage_player, self.bgm_control)
+                                    Enemy('slime', (x,y), [self.visible_spirtes, self.attackable_srpites], self.obstacle_sprites, self.damage_player)
                             elif col == '91':
-                                Enemy('boss_slime', (x,y), [self.visible_spirtes, self.attackable_srpites], self.obstacle_sprites, self.damage_player, self.bgm_control, self.summon_ally, self.show_win)
+                                Enemy('boss_slime', (x,y), [self.visible_spirtes, self.attackable_srpites], self.obstacle_sprites, self.damage_player, self.summon_ally, self.show_win)
     def summon_ally(self, pos, name):
-        Enemy(name, pos, [self.visible_spirtes, self.attackable_srpites], self.obstacle_sprites, self.damage_player, self.bgm_control)
+        Enemy(name, pos, [self.visible_spirtes, self.attackable_srpites], self.obstacle_sprites, self.damage_player)
     def create_attack(self):
         self.current_attack = Weapon(self.player,[self.visible_spirtes, self.attack_sprites], self.attack_string)
         self.attack_string = not self.attack_string
@@ -177,6 +177,8 @@ class Level:
                     
                     # Increment map location
                     self.map_location += 1
+
+                    self.bgm_control(self.map_location)
                     
                     # Update map for the YSortCameraGroup
                     self.visible_spirtes.update_map(self.map_location)
@@ -201,17 +203,18 @@ class Level:
             if not self.space_pressed_time and not self.can_next_text:
                 self.space_pressed_time = pygame.time.get_ticks()
                 self.can_next_text = False
-            self.draw_text("You have awaken from a long slumber.", (225,225,225), 30, None, HEIGHT-100)
+            self.draw_text("You've been woken up from your long slumber.", (225,225,225), 30, None, HEIGHT-100)
         elif self.tutorial_state_number == 1:
             if not self.space_pressed_time and not self.can_next_text:
                 self.space_pressed_time = pygame.time.get_ticks()
                 self.can_next_text = False
-            self.draw_text("And placed in a unsuall place.",(225,225,225), 30, None, HEIGHT-100)
+            self.draw_text("And currently in an unfamiliar place.",(225,225,225), 30, None, HEIGHT-100)
         elif self.tutorial_state_number == 2:
             if not self.space_pressed_time and not self.can_next_text:
                 self.space_pressed_time = pygame.time.get_ticks()
                 self.can_next_text = False
-            self.draw_text("You feel that you can't control your own body.",(225,225,225), 30, None, HEIGHT-100)
+            self.draw_text("You feel like you can't control your own body.",(225,225,225), 30, None, HEIGHT-130)
+            self.draw_text("And you tried to walk toward the ground.",(225,225,225), 30, None, HEIGHT-90)
         elif self.tutorial_state_number == 3:
             if not self.space_pressed_time and not self.can_next_text:
                 self.space_pressed_time = pygame.time.get_ticks()
@@ -256,7 +259,7 @@ class Level:
                     player_vec = pygame.math.Vector2(self.player.rect.center)
                     x = player_vec[0] 
                     y = player_vec [1]-100
-                    self.tutiorial_slime = Enemy('slime', (x,y), [self.visible_spirtes, self.attackable_srpites], self.obstacle_sprites, self.damage_player, self.bgm_control)
+                    self.tutiorial_slime = Enemy('slime', (x,y), [self.visible_spirtes, self.attackable_srpites], self.obstacle_sprites, self.damage_player)
     
     def check_cooldown(self):
         current_time = pygame.time.get_ticks()
@@ -395,6 +398,7 @@ class Level:
             self.draw_text(f"{location['objective_finished']}",(255, 255, 255), 18, 10, 65)
         self.ui.display(self.player)
         if self.win_screen:
+            self.bgm_control(3)
             self.win_screen.show_win_screen()
         if self.retry_screen and not self.win_screen:
             self.retry_screen.show_retry_screen()

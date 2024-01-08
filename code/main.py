@@ -24,7 +24,9 @@ class Game:
         self.win = False
 
         self.bgm_volume = 0
+        self.current_bgm = 0
         self.state = True
+        self.bgm_full_volume = False
     def run(self):
         while self.state:
             self.clock.tick(FPS)  # Move the clock tick outside the conditions
@@ -32,9 +34,11 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.state = False
-            if ((self.bgm_playing or self.boss) and not self.bgm_volume >=0.5):
+            if self.bgm_playing and not self.bgm_full_volume:
                 self.bgm_volume += 0.03
                 self.main_sound.set_volume(self.bgm_volume)
+                if self.bgm_volume >= 0.5:
+                    self.bgm_full_volume = True
             else:
                 
                 # Don't draw the background, instead, run the level
@@ -49,21 +53,32 @@ class Game:
         self.state = False
 
     def change_bgm(self, type):
-        if self.bgm_playing or self.boss:
-            self.main_sound.stop()
-            self.bgm_playing = not self.bgm_playing
-            self.boss = not self.boss
-        if type == 'start':
-            self.boss = True
-            self.bgm_volume = 0.5
-            self.main_sound = pygame.mixer.Sound('../audio/bryan-slime_boss.wav')
-            self.main_sound.play(loops=-1)
-            self.main_sound.set_volume(self.bgm_volume)
-        elif type == 'win':
-            self.bgm_playing = True
-            self.bgm_volume = 0.5
-            self.main_sound = pygame.mixer.Sound('../audio/bryan-goodbye.wav')
-            self.main_sound.play(loops=-1)
-            self.main_sound.set_volume(self.bgm_volume)
+        if not self.current_bgm == type:
+            if self.bgm_playing:
+                self.main_sound.stop()
+                self.bgm_playing = not self.bgm_playing
+                self.boss = not self.boss
+            if type == 1:
+                self.bgm_playing = True
+                self.bgm_full_volume = False
+                self.bgm_volume = 0
+                self.main_sound = pygame.mixer.Sound('../audio/bryan-main_theme.wav')
+                self.main_sound.play(loops=-1)
+                self.main_sound.set_volume(self.bgm_volume)
+            elif type == 2:
+                self.bgm_playing = True
+                self.bgm_full_volume = False
+                self.bgm_volume = 0
+                self.main_sound = pygame.mixer.Sound('../audio/bryan-slime_boss.wav')
+                self.main_sound.play(loops=-1)
+                self.main_sound.set_volume(self.bgm_volume)
+            elif type == 3:
+                self.bgm_playing = True
+                self.bgm_full_volume = False
+                self.bgm_volume = 0
+                self.main_sound = pygame.mixer.Sound('../audio/bryan-goodbye.wav')
+                self.main_sound.play(loops=-1)
+                self.main_sound.set_volume(self.bgm_volume)
+            self.current_bgm = type
 
 
